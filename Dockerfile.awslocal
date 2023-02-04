@@ -21,16 +21,16 @@ RUN apt-get install -y openssh-server
 
 RUN mkdir /var/run/sshd
 
+# Change sshd_config in order to allow developer to login as root
 RUN echo 'root:passwd' | chpasswd
-
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -i 's/#Port 22/Port 4000/' /etc/ssh/sshd_config
-
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
-# Localstack
+# Localstack Environment Variables
 ENV LOCALSTACK_HOST=localstack
 
-# expose the ssh service
 EXPOSE 4000
+# Default: expose the ssh service
+# could be overriden by python running command
 CMD ["/usr/sbin/sshd", "-D"]
