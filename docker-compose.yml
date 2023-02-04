@@ -17,4 +17,4 @@ services:
     ports:
       - "4000:4000"
     # comment the following line to use ssh
-    command: bash -c "python3 -u /app/main.py"
+    command: bash -c "service ssh start && python3 -u /app/main.py"
