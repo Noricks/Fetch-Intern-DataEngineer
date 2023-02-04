@@ -8,3 +8,8 @@ services:
     image: fetchdocker/data-takehome-postgres
     ports:
       - "5432:5432"
+  awslocal:
+    build:
+        context: .
+        dockerfile: Dockerfile.awslocal
+    network_mode: "host"
