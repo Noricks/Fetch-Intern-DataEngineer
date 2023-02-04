@@ -1,4 +1,5 @@
 import hashlib
+import logging
 
 
 def hash_str(value) -> str:
@@ -20,3 +21,16 @@ def version_to_int(version: str) -> int:
         version_value += int(e) * pow(2, base)
         base += 4
     return version_value
+
+
+class ServiceExit(Exception):
+    """
+    Custom exception which is used to trigger the clean exit
+    of all running threads and the main program.
+    """
+    pass
+
+
+def signal_handler(sig, frame):
+    logging.info('Caught signal: ' + str(sig))
+    raise ServiceExit
