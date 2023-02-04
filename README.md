@@ -40,7 +40,10 @@ This is the answer for the test of "Data Engineer"
 3. Use `Ctrl+C` to stop the program
    - It takes several seconds to wait for the program to clean up the queue and exit
    - In a local environment, you can see the logs for cleaning after the `Ctrl+C` is pressed.
-
+4. To see the results you could run following bash scripts.
+```bash
+    PGPASSWORD=postgres psql -d postgres -U postgres -p 5432 -h localhost -c "SELECT * FROM user_logins"
+```
 # Design Ideas
 
 ## How will you read messages from the queue?
