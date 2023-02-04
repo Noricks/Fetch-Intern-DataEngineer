@@ -12,5 +12,9 @@ services:
     build:
         context: .
         dockerfile: Dockerfile.awslocal
+    volumes:
+      - ./:/app
     ports:
       - "4000:4000"
+    # comment the following line to use ssh
+    command: bash -c "python3 -u /app/main.py"
