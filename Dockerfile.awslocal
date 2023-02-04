@@ -4,18 +4,20 @@ RUN apt-get update
 # Avoid terminal interactions
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Install Python and packages
-RUN apt-get -y install python3
-RUN apt-get -y install pip
-RUN pip install awscli-local
-RUN pip install awscli
+# Update repo info
+RUN apt-get update
 
 # Install PostgreSQL
 RUN apt-get install -y postgresql postgresql-contrib
+
+# Install Python and packages
+RUN apt-get -y install python3 pip libpq-dev
+RUN pip install awscli-local awscli psycopg2
+
 # service start postgresql
 
 # Install ssh server
-RUN apt-get update && apt-get install -y openssh-server
+RUN apt-get install -y openssh-server
 
 RUN mkdir /var/run/sshd
 
