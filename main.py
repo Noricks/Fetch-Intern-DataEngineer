@@ -111,7 +111,7 @@ def get_from_aws(queue: Queue):
 
         if raw_value.returncode != 0:
             logging.error("Error getting message from AWS")
-            break
+            continue
         else:
             stdout = raw_value.stdout.decode(message_encoding)
             is_correct, out_dict = parse_raw_values(stdout)
