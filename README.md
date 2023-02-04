@@ -2,6 +2,11 @@
 This is the answer for the test of "Data Engineer"
 
 # How to run
+
+## Note
+Please contact me if you have any questions about the code or the environment. I am happy to explain more details. I use `Docker` to minimize the chance there is an incompatibility in the environment, but `Docker` would have different behaviours on different platforms, which I can not fully predict and test. I spend a lot of efforts, and I do not want to lose the chance to get the job. Thank you!
+
+
 ## Run with `docker-compose`
 ### Requirements
 - docker
