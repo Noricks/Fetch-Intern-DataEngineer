@@ -103,4 +103,4 @@ As it is presented in the `docker-compose.yml` and the customized `Dockerfile.aw
 ## What are the assumptions you made?
 - The general format of message will not change. The only thing that could change is the body of the message.
 - The generated message that is not in the standard format is useless and can be ignored
-- The version of application like a.b.c/a.b could be converted to an integer number a*2^8 + b*2^4 + c
+- The version of application like `a.b.c/a.b` could be converted to an integer number `a*pow(2,8) + b*pow(2,4) + c` since the version number is not too large and this approach will fit the value into the integer type in the database
