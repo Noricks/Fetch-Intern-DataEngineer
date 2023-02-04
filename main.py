@@ -111,8 +111,7 @@ def get_from_aws(queue: Queue):
 
         if raw_value.returncode != 0:
             logging.error("Error getting message from AWS")
-            logging.error(raw_value.stderr.decode(message_encoding))
-            signal_handler(signal.SIGINT, None)
+            break
         else:
             stdout = raw_value.stdout.decode(message_encoding)
             is_correct, out_dict = parse_raw_values(stdout)
@@ -130,21 +129,19 @@ def write_to_sql(queue: Queue, connection: psycopg2.connect):
     :return: None
     """
     insert_query = get_insert_query()
-
     while not stop or queue.qsize() > 0:
-        logging.debug("Queue size: " + str(queue.qsize()))
-        message = queue.get()
-        logging.debug(message)
-
-        record_to_insert = []
-        for ele in expected_info_dict:
-            key = ele['sql_name']
-            record_to_insert.append(message[key])
-        # change to tuple
-        record_to_insert = tuple(record_to_insert)
-        cursor = connection.cursor()
-        cursor.execute(insert_query, record_to_insert)
-        connection.commit()
+        if queue.qsize() > 0:
+            message = queue.get()
+            logging.debug(message)
+            record_to_insert = []
+            for ele in expected_info_dict:
+                key = ele['sql_name']
+                record_to_insert.append(message[key])
+            # change to tuple
+            record_to_insert = tuple(record_to_insert)
+            cursor = connection.cursor()
+            cursor.execute(insert_query, record_to_insert)
+            connection.commit()
     logging.info("Exit consumer thread")
 
 
