@@ -16,5 +16,5 @@ services:
       - ./:/home
     ports:
       - "4000:4000"
-    # comment the following line to use ssh
+    # comment the following line to only run the container and ssh
     command: bash -c "service ssh start && python3 -u /home/main.py"
