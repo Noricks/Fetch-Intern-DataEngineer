@@ -18,8 +18,8 @@ q_size = 20
 expected_info_dict = [
     {'aws_name': 'user_id', 'sql_name': 'user_id', 'type': str, 'process': None, 'required': True},
     {'aws_name': 'device_type', 'sql_name': 'device_type', 'type': str, 'process': None, 'required': True},
-    {'aws_name': 'ip', 'sql_name': 'masked_ip', 'type': str, 'process': hash_str, 'required': True},
-    {'aws_name': 'device_id', 'sql_name': 'masked_device_id', 'type': str, 'process': hash_str, 'required': True},
+    {'aws_name': 'ip', 'sql_name': 'masked_ip', 'type': str, 'process': encode_str, 'required': True},
+    {'aws_name': 'device_id', 'sql_name': 'masked_device_id', 'type': str, 'process': encode_str, 'required': True},
     {'aws_name': 'locale', 'sql_name': 'locale', 'type': str, 'process': None, 'required': True},
     {'aws_name': 'app_version', 'sql_name': 'app_version', 'type': int, 'process': version_to_int, 'required': True},
     {'aws_name': 'create_date', 'sql_name': 'create_date', 'type': str, 'process': datetime.date.today,

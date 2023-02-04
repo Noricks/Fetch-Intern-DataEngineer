@@ -1,13 +1,17 @@
-import hashlib
+from cryptography.fernet import Fernet
 import logging
 
+key = b'qaOMUbtW4M31PDU8p0LdwTdgE22coHm00RGOFK-FSQs='
 
-def hash_str(value) -> str:
-    value = str(value)
-    sha256 = hashlib.sha256()
-    sha256.update(value.encode('utf-8'))
-    res = sha256.hexdigest()
-    return res
+
+def encode_str(value: str) -> str:
+    f = Fernet(key)
+    return f.encrypt(value.encode()).decode()
+
+
+def decode_str(value: str) -> str:
+    f = Fernet(key)
+    return f.decrypt(value.encode()).decode()
 
 
 def version_to_int(version: str) -> int:
