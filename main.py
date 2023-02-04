@@ -150,6 +150,7 @@ def app():
     The main function of the program
     :return: None
     """
+    time.sleep(10)  # wait for the database to start
     signal.signal(signal.SIGINT, signal_handler)
     queue = Queue(q_size)  # limit the size of the queue
     psql_connection = None
