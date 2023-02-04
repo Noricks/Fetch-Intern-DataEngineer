@@ -1,3 +1,4 @@
+import argparse
 import json
 import subprocess
 import os
@@ -28,9 +29,6 @@ expected_info_dict = [
 
 queue_url = 'http://localhost:4566/000000000000/login-queue'
 logging.basicConfig(level=logging.DEBUG)
-
-# Set environment variable in case ssh connection do not load it
-os.environ["LOCALSTACK_HOST"] = "localstack"
 
 # Global variables
 stop = False  # could be replaced by threading.Event()
@@ -105,7 +103,6 @@ def get_from_aws(queue: Queue):
     while not stop:
         # Execute aws command:
         #   awslocal sqs receive-message --queue-url {queue_url}
-
         raw_value = subprocess.run(['awslocal', 'sqs', 'receive-message', '--queue-url', queue_url],
                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
@@ -145,18 +142,26 @@ def write_to_sql(queue: Queue, connection: psycopg2.connect):
     logging.info("Exit consumer thread")
 
 
-def app():
+def app(args):
     """
     The main function of the program
     :return: None
     """
+
     time.sleep(10)  # wait for the database to start
     signal.signal(signal.SIGINT, signal_handler)
     queue = Queue(q_size)  # limit the size of the queue
     psql_connection = None
+    if args.local:
+        host = "localhost"
+    else:
+        # Set environment variable to connect to localstack in case ssh connection do not load it
+        os.environ["LOCALSTACK_HOST"] = "localstack"
+        host = "postgres"
+
     try:
         logging.info("Connecting to postgreSQL")
-        psql_connection = psycopg2.connect("dbname=postgres user=postgres password=postgres host=postgres")
+        psql_connection = psycopg2.connect("dbname=postgres user=postgres password=postgres host={}".format(host))
     except Exception as e:
         logging.error("Error connecting to postgreSQL: " + str(e))
         if psql_connection is not None:
@@ -197,4 +202,7 @@ def app():
 
 # %%
 if __name__ == '__main__':
-    app()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--local", help="use local machine network path", default=False, action="store_true")
+    args = parser.parse_args()
+    app(args)
